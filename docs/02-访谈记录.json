@@ -1,0 +1,30 @@
+{
+  "project": "fsg-contract",
+  "stage": "opportunity",
+  "interviews": [
+    {
+      "id": "I1",
+      "date": "2026-11-05",
+      "interviewee_role": "业务方",
+      "interviewee_name": "张经理",
+      "key_view": "审批常卡在法务，平均5天",
+      "related_hypothesis": "H1"
+    },
+    {
+      "id": "I2",
+      "date": "2026-11-05",
+      "interviewee_role": "法务",
+      "interviewee_name": "李律师",
+      "key_view": "模板分散在个人盘，复用难",
+      "related_hypothesis": "H2"
+    },
+    {
+      "id": "I3",
+      "date": "2026-11-05",
+      "interviewee_role": "客户成功",
+      "interviewee_name": "王女士",
+      "key_view": "签署后找不到历史合同",
+      "related_hypothesis": "Q3"
+    }
+  ]
+}

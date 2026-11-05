@@ -1,0 +1,4 @@
+﻿id,date,interviewee_role,interviewee_name,key_view,related_hypothesis
+I1,2026-11-05,业务方,张经理,审批常卡在法务，平均5天,H1
+I2,2026-11-05,法务,李律师,模板分散在个人盘，复用难,H2
+I3,2026-11-05,客户成功,王女士,签署后找不到历史合同,Q3
