@@ -1,0 +1,153 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>62 境外参展团组材料管理 · MVP 开发提示词</title>
+<style>
+:root{--bg:#f7f8fa;--card:#fff;--ink:#1f2329;--sub:#646a73;--line:#e5e6eb;--brand:#2563eb;--accent:#0ea5e9}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,"Segoe UI","Microsoft YaHei",sans-serif;line-height:1.75}
+.wrap{max-width:900px;margin:0 auto;padding:24px}
+a{color:var(--brand);text-decoration:none}a:hover{text-decoration:underline}
+.top{display:flex;gap:12px;align-items:center;margin-bottom:16px;flex-wrap:wrap}
+.btn{display:inline-block;padding:8px 14px;border:1px solid var(--brand);border-radius:8px;color:var(--brand);background:#fff;font-size:14px}
+.btn:hover{background:var(--brand);color:#fff;text-decoration:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:28px 32px;box-shadow:0 2px 8px rgba(0,0,0,.03)}
+h1{font-size:24px;margin:0 0 8px}h2{font-size:19px;margin:28px 0 10px;padding-bottom:6px;border-bottom:2px solid var(--brand)}
+h3{font-size:16px;margin:20px 0 8px;color:var(--sub)}p{margin:10px 0}
+blockquote{margin:12px 0;padding:10px 16px;background:#eff6ff;border-left:4px solid var(--brand);color:#334155;border-radius:6px}
+code{background:#f1f3f5;padding:2px 6px;border-radius:4px;font-size:13px;color:#c7254e}
+pre{background:#1f2329;color:#e5e7eb;padding:16px;border-radius:8px;overflow:auto}pre code{background:none;color:inherit;padding:0}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}th,td{border:1px solid var(--line);padding:8px 10px;text-align:left}th{background:#f5f7fa}
+ul,ol{padding-left:22px}.meta{color:var(--sub);font-size:13px}
+</style></head><body><div class="wrap">
+<div class="top"><a href="index.html">← 返回项目列表</a>
+<a class="btn" href="docx/62-dlg-itpc-delegation.docx" download>⬇ 下载 DOCX</a>
+<span class="meta">#62 · 展览组织</span></div>
+<div class="card"><h1>62 · 境外参展团组材料管理 — MVP 系统开发提示词</h1>
+<blockquote>项目 ID：<code>dlg-itpc-delegation</code> ｜ 客户/组织：上海外经贸商务展览有限公司 ｜ 业务域：展览组织</blockquote>
+<blockquote>场景：围绕“境外参展团组材料管理”开展业务挖掘、现场调研、需求定义与后续交付训练。</blockquote>
+<blockquote>本文件是一份<strong>可直接粘贴给编码智能体</strong>的系统开发提示词。目标：<strong>90 分钟内交付一个可运行的 FastAPI MVP</strong>，具备 Harness 智能体编排与知识库检索能力，并有可验证的运行效果。</blockquote>
+<p>---</p>
+<h2>0. 使用说明（人读，执行时删除本节）</h2>
+<p>将本文 <code>## 1</code> 至 <code>## 12</code> 的完整内容作为 <strong>system prompt</strong> 粘贴给你的编码智能体（如 WorkBuddy / Cursor / Claude Code）。执行者只需提供一台装有 Python 3.10+ 的机器。所有依赖本地可装，<strong>不依赖任何付费外部 API</strong>。</p>
+<p>---</p>
+<h2>1. 角色与任务</h2>
+<p>你是一名资深 AI 应用全栈工程师。请在 <strong>90 分钟</strong>内，从零构建一个<strong>可运行</strong>的 FastAPI MVP，用于解决下述业务场景的问题。</p>
+<p>硬性要求：</p>
+<ul><li>后端 <strong>FastAPI + Uvicorn</strong>，数据持久化用 <strong>SQLite + SQLAlchemy</strong>（零外部服务）。</li><li>具备 <strong>Harness 工程</strong>：一个可编排、可追溯、带自检的智能体调度层（状态机 + 工具调用 + 记忆）。</li><li>具备 <strong>知识库系统</strong>：本地文档入库 + 检索（优先 <code>TF-IDF</code>/关键词检索，可选 <code>sentence-transformers</code>，<strong>不得</strong>依赖在线嵌入 API）。</li><li>交付物必须能 <code>uvicorn</code> 启动、<code>/api/health</code> 返回 200、核心接口可用、有一条端到端可演示流程。</li></ul>
+<p>---</p>
+<h2>2. 项目业务上下文</h2>
+<ul><li><strong>客户/组织</strong>：上海外经贸商务展览有限公司</li><li><strong>业务域</strong>：展览组织</li><li><strong>业务痛点</strong>（来自一线提出人 林亦舟·一线服务专员）：围绕“境外参展团组材料管理”开展业务挖掘、现场调研、需求定义与后续交付训练。</li><li><strong>共同提出人</strong>：顾明岚·业务负责人</li><li><strong>目标用户</strong>：一线业务人员、班组长/主管、运营交接人员</li><li><strong>领域</strong>：展览项目与供应商协同</li></ul>
+<p>一句话问题定义：在「境外参展团组材料管理」场景中，信息分散、依赖人工经验判断、缺少可追溯的证据链，导致重复沟通与交接遗漏。需用 MVP 把「受理 → 核验 → 执行 → 交接」串成可运行闭环。</p>
+<p>---</p>
+<h2>3. MVP 目标与非目标</h2>
+<h3>3.1 必须可运行（P0）</h3>
+<ol><li>数据模型落地：项目、需求、供应商、版本 等核心对象可增删改查。</li><li>知识库：首批 4 类文档入库，可检索并返回带来源的答案片段。</li><li>Harness：一条完整编排链（理解 → 检索 → 推理 → 动作 → 自检），每步可追溯。</li><li>REST API：下方清单接口全部可用，<code>/api/health</code> 正常。</li><li>端到端演示：输入一个真实场景问题，输出结构化处理结果 + 知识依据 + 交接摘要。</li></ol>
+<h3>3.2 明确不做（90 分钟内）</h3>
+<ul><li>不做生产级鉴权、不做前端复杂交互（提供最小 HTML 或 Swagger 即可）。</li><li>不接外部付费模型/向量服务；LLM 调用提供<strong>可注入接口 + Mock 实现</strong>，保证离线可跑。</li><li>不做高并发、容器编排、CI/CD。</li></ul>
+<p>---</p>
+<h2>4. 技术栈与目录结构</h2>
+<p>技术栈：<code>FastAPI</code> <code>uvicorn</code> <code>SQLAlchemy</code> <code>pydantic</code> <code>scikit-learn</code>(TF-IDF) <code>jinja2</code>（可选）<code>pytest</code>。</p>
+<pre><code>app/
+  main.py              # FastAPI 入口 + 路由挂载
+  db.py                # SQLite 引擎与 Session
+  models.py            # ORM 数据模型
+  schemas.py           # Pydantic 模型
+  kb/
+    ingest.py          # 文档切分与入库
+    retrieve.py        # TF-IDF 检索
+    docs/              # 初始知识文档(markdown/txt)
+  harness/
+    engine.py          # 状态机编排引擎
+    agents.py          # 简报解析 Agent 等智能体
+    tools.py           # 工具：检索/查询/写入
+    memory.py          # 运行记忆与轨迹
+  api/
+    routes.py          # REST 接口
+tests/
+  test_smoke.py        # 冒烟测试
+requirements.txt
+README.md</code></pre>
+<p>---</p>
+<h2>5. 系统架构</h2>
+<pre><code>[客户端/Swagger]
+      |
+[FastAPI API 层]  /api/*  -&gt;  schemas 校验
+      |
+[Harness 编排层]  状态机: 理解 -&gt; 检索 -&gt; 推理 -&gt; 动作 -&gt; 自检
+      |        |            |         |
+   tools    memory       agents     LLM(可Mock)
+      |           
+[知识库层]  ingest -&gt; 切分 -&gt; TF-IDF 索引 -&gt; retrieve(top-k + 来源)
+      |
+[数据层]  SQLite(SQLAlchemy) — 业务对象 + 运行轨迹</code></pre>
+<p>关键约束：Harness 每一步写入 <code>trace</code>（step, input, output, latency），最终响应附带 <code>trace_id</code>，实现<strong>全流程可追溯</strong>。</p>
+<p>---</p>
+<h2>6. 领域数据模型（针对本项目定制）</h2>
+<table><thead><tr><th>实体</th><th>关键字段</th><th>说明</th></tr></thead><tbody>
+<tr><td>项目 Project</td><td>id, 展会, 阶段, 状态</td><td>系统核心对象，支持增删改查与状态流转</td></tr>
+<tr><td>需求 Brief</td><td>id, project_id, 内容, 评审状态</td><td>系统核心对象，支持增删改查与状态流转</td></tr>
+<tr><td>供应商 Supplier</td><td>id, 品类, 交付项, 状态</td><td>系统核心对象，支持增删改查与状态流转</td></tr>
+<tr><td>版本 Version</td><td>id, 方案, 评审意见</td><td>系统核心对象，支持增删改查与状态流转</td></tr>
+</tbody></table>
+<p>另需 <code>Trace</code> 表记录编排轨迹：<code>id, run_id, step, input_json, output_json, created_at</code>。</p>
+<p>---</p>
+<h2>7. 知识库（RAG）设计</h2>
+<p>首批入库文档类型：</p>
+<ul><li><code>方案模板</code>：入库为可检索知识条目，含来源、版本、生效时间</li><li><code>评审标准</code>：入库为可检索知识条目，含来源、版本、生效时间</li><li><code>供应商清单</code>：入库为可检索知识条目，含来源、版本、生效时间</li><li><code>交接规范</code>：入库为可检索知识条目，含来源、版本、生效时间</li></ul>
+<p>实现要点：</p>
+<ol><li>将 <code>kb/docs/</code> 下文档按段落切分（200–400 字），记录 <code>doc_id / 来源 / 版本 / 生效时间</code>。</li><li>用 <code>TfidfVectorizer</code> 建索引；检索返回 top-3 片段 + 相似度 + 来源。</li><li>提供 <code>POST /api/kb/search</code>；Harness 的「检索」步骤复用该能力。</li><li>回答必须带来源引用，无法命中时返回「知识库未覆盖」，<strong>禁止编造</strong>。</li></ol>
+<p>---</p>
+<h2>8. Harness 智能体编排工程</h2>
+<p>流程主线：<strong>需求简报 → 方案评审 → 供应商交接 → 执行跟踪 → 复盘</strong>。</p>
+<p>智能体清单：</p>
+<ul><li><strong>简报解析 Agent</strong>：结构化输入→LLM推理→结构化输出，纳入 Harness 状态机</li><li><strong>评审辅助 Agent</strong>：结构化输入→LLM推理→结构化输出，纳入 Harness 状态机</li><li><strong>供应商匹配 Agent</strong>：结构化输入→LLM推理→结构化输出，纳入 Harness 状态机</li><li><strong>复盘 Agent</strong>：结构化输入→LLM推理→结构化输出，纳入 Harness 状态机</li></ul>
+<p>状态机（Python <code>enum</code> + 循环）：</p>
+<pre><code>class Stage(str, Enum):
+    UNDERSTAND = &quot;understand&quot;   # 解析输入 -&gt; 结构化意图
+    RETRIEVE    = &quot;retrieve&quot;    # 调知识库检索证据
+    REASON      = &quot;reason&quot;      # LLM/Mock 推理，产出建议
+    ACT         = &quot;act&quot;         # 写入业务对象 / 生成交接
+    SELFCHECK   = &quot;selfcheck&quot;   # 校验必填字段与证据引用</code></pre>
+<p>要求：</p>
+<ul><li>有界重试：自检失败最多重试 2 次，仍失败则标记 <code>needs_human=true</code>。</li><li>全链路 trace；<code>/api/harness/run</code> 返回 <code>{result, trace, trace_id}</code>。</li><li>LLM 接口做成 <code>call_llm(prompt)-&gt;str</code>，默认 Mock（规则模板），便于离线运行。</li></ul>
+<p>---</p>
+<h2>9. REST API 端点清单</h2>
+<table><thead><tr><th>方法/路径</th><th>用途</th></tr></thead><tbody>
+<tr><td><code>GET/POST /api/projects</code></td><td>projects 资源列表 / 新建</td></tr>
+<tr><td><code>GET/POST /api/briefs</code></td><td>briefs 资源列表 / 新建</td></tr>
+<tr><td><code>GET/POST /api/suppliers</code></td><td>suppliers 资源列表 / 新建</td></tr>
+<tr><td><code>GET/POST /api/versions</code></td><td>versions 资源列表 / 新建</td></tr>
+<tr><td><code>GET/POST /api/reviews</code></td><td>reviews 资源列表 / 新建</td></tr>
+<tr><td><code>POST /api/harness/run</code></td><td>启动一次 Harness 编排流程</td></tr>
+<tr><td><code>POST /api/kb/search</code></td><td>知识库语义/关键词检索</td></tr>
+<tr><td><code>GET /api/health</code></td><td>健康检查（验收用）</td></tr>
+</tbody></table>
+<p>---</p>
+<h2>10. 90 分钟执行计划（时间盒）</h2>
+<table><thead><tr><th>时间段</th><th>产出</th><th>验收点</th></tr></thead><tbody>
+<tr><td>0–10 min</td><td>初始化项目、requirements、目录骨架</td><td><code>pip install -r requirements.txt</code> 成功</td></tr>
+<tr><td>10–25 min</td><td>数据模型 + SQLite + CRUD</td><td>迁移建表成功</td></tr>
+<tr><td>25–40 min</td><td>知识库 ingest + TF-IDF 检索</td><td><code>POST /api/kb/search</code> 返回片段+来源</td></tr>
+<tr><td>40–60 min</td><td>Harness 状态机 + agents + mock LLM</td><td><code>/api/harness/run</code> 返回完整 trace</td></tr>
+<tr><td>60–75 min</td><td>API 路由汇总 + 健康检查 + 最小页面</td><td><code>/api/health</code> 200；Swagger 可见全部接口</td></tr>
+<tr><td>75–85 min</td><td>端到端演示 + 冒烟测试</td><td>一条完整流程跑通，有结构化输出</td></tr>
+<tr><td>85–90 min</td><td>README + 截图 + 自检</td><td>他人可按 README 独立启动</td></tr>
+</tbody></table>
+<p>---</p>
+<h2>11. 可运行验收（Smoke Test）</h2>
+<pre><code>pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
+# 另开终端：
+curl http://127.0.0.1:8000/api/health
+curl -X POST http://127.0.0.1:8000/api/kb/search -H &quot;Content-Type: application/json&quot; -d {&quot;query&quot;:&quot;如何处理境外参展团组材料管理中的常见问题&quot;}
+curl -X POST http://127.0.0.1:8000/api/harness/run -H &quot;Content-Type: application/json&quot; -d {&quot;input&quot;:&quot;模拟一个需求简报场景的问题&quot;}
+pytest -q</code></pre>
+<p>通过标准：<code>/api/health</code> 返回 <code>{&quot;status&quot;:&quot;ok&quot;}</code>；知识检索返回带来源片段；Harness 返回含 5 个 stage 的 trace； pytest 全绿。</p>
+<p>---</p>
+<h2>12. 交付清单与红线</h2>
+<p><strong>交付清单</strong></p>
+<ul><li>[ ] 可启动的 FastAPI 应用（含 <code>requirements.txt</code>、<code>README.md</code>）</li><li>[ ] 数据模型 + SQLite 持久化</li><li>[ ] 知识库入库与检索（带来源）</li><li>[ ] Harness 编排（状态机 + 工具 + 记忆 + 自检 + trace）</li><li>[ ] 全部 REST 接口 + <code>/api/health</code></li><li>[ ] 一条端到端可演示流程 + 冒烟测试通过</li><li>[ ] 关注指标：<code>评审轮次</code>、<code>交接完整度</code>、<code>交付及时率</code></li></ul>
+<p><strong>红线</strong></p>
+<ul><li>不得编造知识库未覆盖的答案；不得使用付费外部 API；不得跳过 trace。</li><li>涉及人员/客户数据一律脱敏（本项目为合成训练数据）。</li></ul>
+<p>---</p>
+<blockquote>提示：本提示词由 FDE 训练中心项目目录自动生成，业务上下文取自项目真实档案；领域实体、知识文档、智能体角色按「展览组织」定制，可直接执行。</blockquote></div>
+</div></body></html>
